@@ -3,8 +3,6 @@ package com.gqoitic.desktopApp1;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -36,26 +34,22 @@ class Window extends JFrame {
         JButton newWindowButton = new JButton("New Picture");
         newWindowButton.setSize(300, 50);
         newWindowButton.setVisible(true);
-        newWindowButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                spawnX += 20;
-                spawnY += 20;
+        newWindowButton.addActionListener(e -> {
+            spawnX += 20;
+            spawnY += 20;
 
-                amountOfWindows++;
-                windowCounter++;
+            amountOfWindows++;
+            windowCounter++;
 
-                createWindow();
-            }
+            createWindow();
         });
 
         JButton closeAllButton = new JButton("Close All Windows");
         closeAllButton.setSize(300, 50);
         closeAllButton.setVisible(true);
-        closeAllButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-            }
+        closeAllButton.addActionListener(e -> {
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
         });
 
         final Container pane = frame.getContentPane();
@@ -74,14 +68,18 @@ class Window extends JFrame {
             }
         });
 
+        String path = Image.randomImage().getLink();
+
         try {
-            String path = Image.randomImage().getLink();
             URL url = new URL(path);
             BufferedImage image = ImageIO.read(url);
             JLabel label = new JLabel(new ImageIcon(image));
             pane.add(label, BorderLayout.CENTER);
         } catch(Exception exception) {
-            exception.printStackTrace();
+            //exception.printStackTrace();
+            for(int i = 0; i < 10; i++) {
+                System.out.println("Error uploading picture - " + path);
+            }
         }
 
     }
